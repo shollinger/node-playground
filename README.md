@@ -104,6 +104,10 @@ Processing the server this way means that expensive I/O tasks (the most expensiv
 
 `setTimeout` and `setImmediate` can be used to add function calls to the Event Queue.
 
+Resources:
+
+http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D
+
 ## Custom Events (not the same as Event Loop)
 Events you'll see in Node application code have NOTHING to do with the event loop (to my suprise)! They are your normal event-driven abstraction.You can emit your own events from any object that extends `EventEmitter`.  You can listen for events on that module with `myModule.on(()=>{ ... });`
 
