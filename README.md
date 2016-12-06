@@ -90,7 +90,7 @@ function myAsyncFunction(firstArg, secondArg, thirdArg) => {
 ## Event Loop
 ![alt tag](https://ga-chicago.gitbooks.io/wdi-ravenclaw/content/07_fullstack_node/eventloop.png)
 
-Node runs on the Javascript V8 engine, the same engine as Chrome.  Your Node server runs in the same thread, no matter how many connections are made!  How can the code be single threaded like this, and still be performant (and actually be more performant than most other servers)?  The anser to this is something called the Event Loop.
+Node runs on the Javascript V8 engine, the same engine as Chrome.  Your Node server runs each request in the same thread, no matter how many connections are made!  How can the code be single threaded like this, and still be performant (and actually be more performant than most other servers)?  The answer to this is something called the Event Loop.
 
 There are a two parts of the system to consider: the Stack and the Event Queue.
 
