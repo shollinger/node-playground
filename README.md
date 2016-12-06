@@ -104,6 +104,8 @@ Processing the server this way means that expensive I/O tasks (the most expensiv
 
 `setTimeout` and `setImmediate` can be used to add function calls to the Event Queue.
 
+Because there is only 1 thread for all requests coming into a Node.js server, it is VITAL that your application code processes the Stack very quickly.  This means do not perform CPU intensive work or other blocking functions without off-loading them via `async` or other workers.
+
 Resources:
 
 http://latentflip.com/loupe/?code=JC5vbignYnV0dG9uJywgJ2NsaWNrJywgZnVuY3Rpb24gb25DbGljaygpIHsKICAgIHNldFRpbWVvdXQoZnVuY3Rpb24gdGltZXIoKSB7CiAgICAgICAgY29uc29sZS5sb2coJ1lvdSBjbGlja2VkIHRoZSBidXR0b24hJyk7ICAgIAogICAgfSwgMjAwMCk7Cn0pOwoKY29uc29sZS5sb2coIkhpISIpOwoKc2V0VGltZW91dChmdW5jdGlvbiB0aW1lb3V0KCkgewogICAgY29uc29sZS5sb2coIkNsaWNrIHRoZSBidXR0b24hIik7Cn0sIDUwMDApOwoKY29uc29sZS5sb2coIldlbGNvbWUgdG8gbG91cGUuIik7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D

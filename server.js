@@ -1,7 +1,9 @@
-const eventLoop = require('./examples/events/event-loop');
-const emitEvent = require('./examples/events/emit-an-event');
-const useCase1 = require('./examples/events/use-case-1');
+const eventLoop = require('./examples/event-loop/event-loop');
+const eventLoopNoEventQueue = require('./examples/event-loop/event-loop-no-event-queue');
+const emitEvent = require('./examples/event-emitters/emit-an-event');
+const conditionalUserUpdates = require('./examples/event-emitters/conditional-user-updates');
 
-eventLoop();
+//eventLoop();
+//eventLoopNoEventQueue();
 //emitEvent();
-//useCase1();
+conditionalUserUpdates();
