@@ -87,18 +87,27 @@ function myAsyncFunction(firstArg, secondArg, thirdArg) => {
 }
 ```
 
-## Events and Event Loop
+## Event Loop
 ![alt tag](https://ga-chicago.gitbooks.io/wdi-ravenclaw/content/07_fullstack_node/eventloop.png)
 
-Node is an event-driven system that has a master event loop that determines when functions get executed.
+Node runs on the Javascript V8 engine, the same engine as Chrome.  Your Node server runs in the same thread, no matter how many connections are made!  How can the code be single threaded like this, and still be performant (and actually be more performant than most other servers)?  The anser to this is something called the Event Loop.
 
-Node has an infinate loop that listens for events and executes their listeners in the order they are registered.  This loop will wait for one event to finish executing before it moves on to the next event. In this way, event handling is synchronous!  Therefore, it is important that none of your code is 'blocking' the function from completing (like sleeping waiting for some I/O like writing to the disk).
+There are a two parts of the system to consider: the Stack and the Event Queue.
 
-You can emit your own events from any object that extends `EventEmitter`.  You can listen for events on that module with `myModule.on(()=>{ ... });`
+The Stack contains a list of functions (and data associated with them, like arguments) to be executed.  When a function is 'called' in Node, it is added to the top Stack.  The V8 engine will execute all the functions in the Stack, top-down, until it is empty.
 
-Emitting an event does not make it asyncronous!  It simply adds the event listeners for that event to the *task queue* to be processed, in order, after the current event in the queue is complete (likely the task that is running the code that is emitting the event).
+The Event Queue is a list of functions that V8 wants to call 'sometime soon', when the Stack is empty.  When we want to perform an async operation, such as calling a Web API, the async function is executed outside the main application thread and always has a callback to call when it is done.  When the async function is complete, it will add the callback function to the Event Queue.  The Event Loop is an infinate loop that basically checks if there are items in the Event Queue and if the Stack is empty.  If that's true, it puts the items in the Event Queue onto the Stack to be executed.
 
-`process.nextTick(()=>{ ... }`) can be used to execute a function after the current turn in the event loop has completed.  Techincally, all `nextTick` functions get added to the "next tick queue" and the entire "next tick queue" is processed, in order, at the end of the event loop.
+Processing the server this way means that expensive I/O tasks (the most expensive part of any computer program) will always be non-blocking to Node's application thread.  Incoming requests from other clients will never have to wait for a connection thread from the connection pool, because whatever is being executed in it needs to perform I/O.  That is the case with many application servers, including Rails.
+
+`process.nextTick(()=>{ ... }`) can be used to execute a function after the current turn in the event loop has completed.  Techincally, all `nextTick` functions get added to the "next tick queue" and the entire "next tick queue" is processed, in order, at the end of the event loop.  This is very similar to the Event Queue that async operations use, but not quite the same.  In theory, I could accidentally keep adding things to the "next tick queue", which would block all I/O callbacks from ever firing!  Because of that, it is recommended you use `setTimeout` or `setImmediate` instead of using `nextTick` more often than not.
+
+`setTimeout` and `setImmediate` can be used to add function calls to the Event Queue.
+
+## Custom Events (not the same as Event Loop)
+Events you'll see in Node application code have NOTHING to do with the event loop (to my suprise)! They are your normal event-driven abstraction.You can emit your own events from any object that extends `EventEmitter`.  You can listen for events on that module with `myModule.on(()=>{ ... });`
+
+Emitting an event does not make it asyncronous!  It simply adds the event listeners for that event to the emitter's queue to be processed, in order, after the current event in the queue is complete.
 
 ## Websockets
 

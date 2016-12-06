@@ -1,11 +1,14 @@
-const EventEmitter = require('events');
+const events = require('events');
 ///////////////////////// Modules that would be in their own file
-class UserAPI extends EventEmitter {};
-class TwitterAPI extends EventEmitter {};
+class UserAPI extends events.EventEmitter {};
+class TwitterAPI extends events.EventEmitter {};
 
 
 function saveToMainDB(userApi) {
   userApi.on('user-data', (data) => {
+    process.nextTick(() => {
+      console.log('This will fire after all the events have processed');
+    });
     console.log('Save some entries to the database: ' + data);
     return 'done'; // This is ignored by Node
   });
